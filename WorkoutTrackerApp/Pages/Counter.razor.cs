@@ -44,8 +44,9 @@ namespace WorkoutTrackerApp.Pages
                 if (dynamicWorkoutsDays.Count == 0) throw new FileLoadException();
                 _workouts = ProcessWorkouts(dynamicWorkoutsDays); 
             }
-            catch
+            catch(Exception ex) 
             {
+                Console.WriteLine(ex.ToString());
                 InvalidFile();
             }
                 
@@ -64,7 +65,22 @@ namespace WorkoutTrackerApp.Pages
                 foreach (var workout in dynamicDay)
                 {
                     if (workout.Key.Equals("Day") || workout.Value.Equals(string.Empty) || workout.Value.Equals("-")) continue;
-                    workouts.Add(new Workout { Date = workoutDate, Description = workout.Value.ToString(), ClassType = new ClassType { TypeName = workout.Key} });
+
+                    if (workoutDate.DayOfWeek == DayOfWeek.Saturday || workoutDate.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        if (workout.Value.StartsWith("Engine"))
+                        {
+                            workouts.Add(new Workout { Date = workoutDate, Description = workout.Value.ToString(), ClassType = new ClassType { TypeName = "Engine" } });
+                            continue;
+                        } 
+                        else if(workout.Key.Equals("CrossFit B"))
+                        {
+                            workouts.Add(new Workout { Date = workoutDate, Description = workout.Value.ToString(), ClassType = new ClassType { TypeName = "CrossFit A" } });
+                            continue;
+                        }
+                    }
+                    workouts.Add(new Workout { Date = workoutDate, Description = workout.Value.ToString(), ClassType = new ClassType { TypeName = workout.Key } });
+                    
                 }
             }
             return workouts;

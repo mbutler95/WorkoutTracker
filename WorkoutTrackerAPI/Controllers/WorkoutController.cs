@@ -50,7 +50,15 @@ namespace WorkoutTrackerAPI.Controllers
 				foreach (var workout in Workouts) 
 				{
 					workout.ClassType = existingTypes.Where(et => et.TypeName == workout.ClassType.TypeName).FirstOrDefault();
-					db.Workouts.Add(workout);
+					var existing = db.Workouts.Where(w => w.Date == workout.Date && w.ClassType.TypeName.Equals(workout.ClassType.TypeName)).FirstOrDefault();
+					if(existing != null)
+					{
+						existing.Description = workout.Description;
+					}
+					else
+					{
+						db.Workouts.Add(workout);
+					}				
 				}
 				db.SaveChanges();
 				
