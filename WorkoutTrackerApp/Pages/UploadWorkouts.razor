@@ -1,8 +1,10 @@
-﻿@page "/counter"
+﻿@page "/UploadWorkouts"
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <PageTitle>Upload Workouts</PageTitle>
 
-<h1>Upload</h1>
+<h1>Upload Workouts</h1>
 
 <p role="status">Current count: @currentCount</p>
 
@@ -14,7 +16,7 @@
     <InputFile OnChange="UpdateAndLoadFile" />
     Choose File!    
 </div>
-<p role="status">@selectedFile</p>
+<p role="status">@SelectedFile</p>
 
 <button class="btn btn-primary" @onclick="Submit">Submit</button>
 
